@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('jadwal', function (Blueprint $table) {
     $table->id();
+
+    $table->foreignId('guru_id')->constrained('guru')->cascadeOnDelete();
     $table->foreignId('kelas_id')->constrained('kelas')->cascadeOnDelete();
     $table->foreignId('mapel_id')->constrained('mapel')->cascadeOnDelete();
-    $table->foreignId('guru_id')->constrained('guru')->cascadeOnDelete();
-    $table->string('hari');
-    $table->string('jam');
+
     $table->timestamps();
 });
     }

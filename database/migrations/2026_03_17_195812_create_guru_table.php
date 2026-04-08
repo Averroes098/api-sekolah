@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mapel', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama_mapel');
-            $table->timestamps();
-        });
+        Schema::create('guru', function (Blueprint $table) {
+    $table->id();
+    $table->string('nama_guru');
+    $table->string('nip');
+    $table->string('alamat');
+    $table->timestamps();
+});
     }
 
     /**

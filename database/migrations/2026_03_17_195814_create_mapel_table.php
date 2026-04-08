@@ -14,10 +14,10 @@ return new class extends Migration
     Schema::dropIfExists('mapel'); // 🔥 TAMBAHAN INI
 
     Schema::create('mapel', function (Blueprint $table) {
-        $table->id();
-        $table->string('nama_mapel');
-        $table->timestamps();
-    });
+    $table->id();
+    $table->string('nama_mapel');
+    $table->timestamps();
+});
 }
 
     /**

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Data Sekolah</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+  margin: 40px;
+}
+
+.container {
+  width: 950px;
+  margin: auto;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0px 8px 20px rgba(0,0,0,0.15);
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+input {
+  padding: 10px;
+  margin: 8px;
+  width: 220px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+input:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 8px rgba(52,152,219,0.3);
+}
+
+button {
+  padding: 10px 18px;
+  border: none;
+  background: #3498db;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #2980b9;
+  transform: scale(1.05);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th {
+  background: #3498db;
+  color: white;
+  padding: 12px;
+}
+
+td {
+  padding: 12px;
+  text-align: center;
+}
+
+tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+tr:hover {
+  background: #f1f7ff;
+}
+
+.detailBtn {
+  background: #2ecc71;
+}
+
+.detailBtn:hover {
+  background: #27ae60;
+}
+
+.icon {
+  margin-right: 6px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>📚 Manajemen Data Sekolah</h1>
+
+  <h3>Tambah Data Sekolah</h3>
+  <input type="text" id="nama_sekolah" placeholder="Nama Sekolah">
+  <input type="text" id="alamat" placeholder="Alamat">
+  <input type="text" id="kepala_sekolah" placeholder="Kepala Sekolah">
+  <input type="text" id="email" placeholder="Email">
+
+  <button onclick="tambahData()"><i class="fa fa-plus icon"></i>Tambah Data</button>
+
+  <hr>
+
+  <h3>List Data Sekolah</h3>
+  <button onclick="loadData()"><i class="fa fa-sync icon"></i>Refresh Data</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nama Sekolah</th>
+        <th>Alamat</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="tableSekolah"></tbody>
+  </table>
+</div>
+
+<script>
+function loadData(){
+  $.ajax({
+    url:"http://127.0.0.1:8000/api/sekolah",
+    method:"GET",
+    success:function(data){
+      $("#tableSekolah").html("");
+      data.forEach(function(item){
+        $("#tableSekolah").append(
+          "<tr>"+
+          "<td>"+item.id+"</td>"+
+          "<td>"+item.nama_sekolah+"</td>"+
+          "<td>"+item.alamat+"</td>"+
+          "<td><button class='detailBtn' onclick='detailData("+item.id+")'><i class='fa fa-info-circle icon'></i>Detail</button></td>"+
+          "</tr>"
+        );
+      });
+    }
+  });
+}
+
+function tambahData(){
+  $.ajax({
+    url:"http://127.0.0.1:8000/api/sekolah",
+    method:"POST",
+    data:{
+      nama_sekolah:$("#nama_sekolah").val(),
+      alamat:$("#alamat").val(),
+      kepala_sekolah:$("#kepala_sekolah").val(),
+      email:$("#email").val()
+    },
+    success:function(){
+      alert("Data berhasil ditambahkan");
+      loadData();
+    }
+  });
+}
+
+function detailData(id){
+  $.ajax({
+    url:"http://127.0.0.1:8000/api/sekolah/"+id,
+    method:"GET",
+    success:function(data){
+      alert(
+        "ID: "+data.id+
+        "\nNama Sekolah: "+data.nama_sekolah+
+        "\nAlamat: "+data.alamat+
+        "\nKepala Sekolah: "+data.kepala_sekolah+
+        "\nEmail: "+data.email
+      );
+    }
+  });
+}
+</script>
+
+</body>
+</html>
